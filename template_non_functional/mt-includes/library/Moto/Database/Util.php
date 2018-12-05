@@ -1,0 +1,2 @@
+<?php
+namespace Moto\Database; use Moto; use Illuminate; class Util { public static function listsOrPluck($collection, $value, $key = null) { if (!($collection instanceof Illuminate\Support\Collection)) { return null; } $data = array(); if (method_exists($collection, 'lists')) { $data = $collection->lists($value, $key); } elseif (method_exists($collection, 'pluck')) { $data = $collection->pluck($value, $key); } if ($data instanceof Illuminate\Support\Collection) { $data = $data->toArray(); } return $data; } } 

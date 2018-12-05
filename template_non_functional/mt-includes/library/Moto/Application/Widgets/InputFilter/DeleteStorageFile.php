@@ -1,0 +1,2 @@
+<?php
+namespace Moto\Application\Widgets\InputFilter; use Moto; class DeleteStorageFile extends Moto\InputFilter\AbstractInputFilter { public function init() { $this->add(array( 'name' => 'id', 'required' => true, 'break_on_failure' => true, 'filters' => array( array('name' => 'StringTrim'), ), 'validators' => array( array( 'name' => 'StringLength', 'options' => array( 'encoding' => 'UTF-8', 'min' => 16, 'max' => 200, ), ), ), )); } } 

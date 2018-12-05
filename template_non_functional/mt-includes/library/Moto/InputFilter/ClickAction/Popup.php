@@ -1,0 +1,2 @@
+<?php
+namespace Moto\InputFilter\ClickAction; use Moto; class Popup extends Page { public function init() { parent::init(); $this->remove('id'); $this->add(array( 'name' => 'id', 'required' => true, 'validators' => array( array( 'name' => 'Digits', 'break_chain_on_failure' => true, ), array( 'name' => 'Db\RecordExists', 'options' => array( 'table' => Moto\Config::get('database.prefix') . 'content_blocks', 'field' => 'id', 'adapter' => Moto\Config::get('databaseAdapter'), ) ) ), )); } } 

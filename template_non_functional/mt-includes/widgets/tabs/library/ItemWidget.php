@@ -1,0 +1,2 @@
+<?php
+namespace Website\Widgets\Tabs; use Moto; class ItemWidget extends Moto\System\Widgets\AbstractContainerWidget { protected $_name = 'tabs.item'; protected static $_defaultProperties = array( 'header' => array( 'content' => '', 'icon' => null, ), ); protected $_templateType = 'templates'; protected $_templatePath = '@websiteWidgets/tabs/templates/item.twig.html'; protected $_widgetId = true; public function isOpenedByDefault() { return array_search($this, $this->_parent->children) === 0; } } 

@@ -1,0 +1,2 @@
+<?php
+namespace Moto\Application\Settings\InputFilter; use Moto\InputFilter\AbstractInputFilter; class PopupPreferences extends AbstractInputFilter { protected $_name = 'settingsWebsite.popupPreferences'; public function init() { $this->add(array( 'name' => 'loading_error_message', 'required' => false, 'filters' => array( array('name' => 'StripTags'), array('name' => 'StringTrim'), ), 'validators' => array( array( 'name' => 'StringLength', 'options' => array( 'encoding' => 'UTF-8', 'min' => 0, 'max' => 512, ), ), ), )); } } 

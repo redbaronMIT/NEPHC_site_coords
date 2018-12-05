@@ -1,0 +1,2 @@
+<?php
+namespace Website\Widgets\FormElements; use Moto; class MessageField { public $_fieldName = ''; public $_fieldValue = ''; public function getFieldType() { return 'text'; } public function getFieldName() { return $this->_fieldName; } public function setFieldName($name) { $this->_fieldName = (string) $name; } public function setFieldValue($value) { $this->_fieldValue = $value; } public function getFieldValue() { return (string) $this->_fieldValue; } public function getRawFieldValue() { return $this->_fieldValue; } public function isValueMultiline() { return false; } } 

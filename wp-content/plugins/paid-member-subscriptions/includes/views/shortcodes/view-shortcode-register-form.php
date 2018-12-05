@@ -40,6 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
         echo '</li>';
 
+        echo 'test';
+
         // Get the contents and clean
         $subscription_plans_field = ob_get_contents();
         ob_end_clean();
@@ -102,6 +104,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
         <li class="pms-field pms-pass2-field <?php echo ( !empty( $field_errors ) ? 'pms-field-error' : '' ); ?>">
             <label for="pms_pass2"><?php echo apply_filters( 'pms_register_form_label_pass2', __( 'Repeat Password *', 'paid-member-subscriptions' ) ); ?></label>
             <input id="pms_pass2" name="pass2" type="password" />
+
+            <?php pms_display_field_errors( $field_errors ); ?>
+        </li>
+        
+        <?php $field_errors = pms_errors()->get_error_messages('uspha'); ?>
+        <li class="pms-field pms-ushpa-field <?php echo ( !empty( $field_errors ) ? 'pms-field-error' : '' ); ?>">
+            <label for="pms_ushpa"><?php echo apply_filters( 'pms_register_form_label_uspha', __( 'Repeat Password *', 'paid-member-subscriptions' ) ); ?></label>
+            <input id="pms_ushpa" name="ushpa" type="number" />
 
             <?php pms_display_field_errors( $field_errors ); ?>
         </li>

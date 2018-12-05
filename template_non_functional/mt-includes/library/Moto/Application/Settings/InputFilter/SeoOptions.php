@@ -1,0 +1,2 @@
+<?php
+namespace Moto\Application\Settings\InputFilter; use Moto\InputFilter\AbstractInputFilter; use Moto; class SeoOptions extends AbstractInputFilter { protected $_name = 'settingsWebsite.seoOptions'; public function init() { $this->add(new Moto\Application\Settings\InputFilter\SeoWebsiteSettings(), 'website'); $this->add(new Moto\Application\Sitemap\InputFilter\SaveSettings(), 'sitemap'); } } 

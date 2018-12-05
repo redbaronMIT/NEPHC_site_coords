@@ -1,0 +1,2 @@
+<?php
+namespace Moto\InputFilter; use Moto; use Zend; class FileInput extends Zend\InputFilter\FileInput { public function isValid($context = null) { if ($this->required) { $value = $this->getRawValue(); if (empty($value)) { $this->errorMessage['isEmpty'] = 'Value is required and can\'t be empty'; return false; } } return parent::isValid($context); } } 
