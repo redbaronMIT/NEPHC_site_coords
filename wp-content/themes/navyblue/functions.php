@@ -1,4 +1,5 @@
 <?php
+
 if ( ! class_exists( 'NavyBlue_Theme_Setup' ) ) {
 
 	/**
@@ -613,6 +614,7 @@ if ( ! class_exists( 'NavyBlue_Theme_Setup' ) ) {
 	}
 }
 
+
 /**
  * Returns instanse of main theme configuration class.
  *
@@ -622,5 +624,34 @@ if ( ! class_exists( 'NavyBlue_Theme_Setup' ) ) {
 function navyblue_theme() {
 	return NavyBlue_Theme_Setup::get_instance();
 }
+
+add_action( 'show_user_profile', 'extra_user_profile_fields' );
+add_action( 'edit_user_profile', 'extra_user_profile_fields' );
+
+function extra_user_profile_fields( $user ) { ?>
+<h3><?php _e("USHPA", "blank"); ?></h3>
+
+<table class="form-table">
+<tr>
+<th><label for="ushpa-number"><?php _e("USHPA#"); ?></label></th>
+<td>
+<input type="number" name="ushpa-number" id="ushpa-number" value="<?php echo esc_attr( get_the_author_meta( 'ushpa-number', $user->ID ) ); ?>" class="regular-text" /><br />
+<!--<input type="text" name="ushpa_number" id="ushpa_number" value="<?php echo esc_attr($profileuser->uspha_number) ?>" class="regular-text" /><br />-->
+<span class="description"><?php _e("Please enter your USHPA#."); ?></span>
+</td>
+</tr>
+</table>
+<?php }
+
+add_action( 'personal_options_update', 'save_extra_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'save_extra_user_profile_fields' );
+
+function save_extra_user_profile_fields( $user_id ) {
+
+if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
+
+update_user_meta( $user_id, 'ushpa-number', $_POST['ushpa-number'] );
+}
+
 
 navyblue_theme();

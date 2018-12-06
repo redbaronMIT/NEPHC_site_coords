@@ -417,6 +417,11 @@ if ( is_multisite() && is_network_admin() && ! IS_PROFILE_PAGE && current_user_c
 	<td><input type="text" name="nickname" id="nickname" value="<?php echo esc_attr($profileuser->nickname) ?>" class="regular-text" /></td>
 </tr>
 
+<tr class="user-uspha-number-wrap">
+	<th><label for="ushpa_number"><?php _e('USHPA#'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
+	<td><input type="text" name="ushpa_number1" id="ushpa_number1" value="<?php echo esc_attr($profileuser->ushpa_number1) ?>" class="regular-text" /></td>
+</tr>
+
 <tr class="user-display-name-wrap">
 	<th><label for="display_name"><?php _e('Display name publicly as') ?></label></th>
 	<td>

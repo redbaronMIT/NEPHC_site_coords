@@ -874,6 +874,8 @@ function upgrade_160() {
 			update_user_meta( $user->ID, 'last_name', wp_slash($user->user_lastname) );
 		if ( !empty( $user->user_nickname ) )
 			update_user_meta( $user->ID, 'nickname', wp_slash($user->user_nickname) );
+		if ( !empty( $user->user_ushpanumber) )
+			update_user_meta( $user->ID, 'uspha_number', wp_slash($user->user_ushpanumber) );
 		if ( !empty( $user->user_level ) )
 			update_user_meta( $user->ID, $wpdb->prefix . 'user_level', $user->user_level );
 		if ( !empty( $user->user_icq ) )
@@ -893,6 +895,7 @@ function upgrade_160() {
 			if ($idmode == 'login') $id = $user->user_login;
 			if ($idmode == 'firstname') $id = $user->user_firstname;
 			if ($idmode == 'lastname') $id = $user->user_lastname;
+			if ($idmode == 'ushpanumber') $id = $user->user_ushpanumber;
 			if ($idmode == 'namefl') $id = $user->user_firstname.' '.$user->user_lastname;
 			if ($idmode == 'namelf') $id = $user->user_lastname.' '.$user->user_firstname;
 			if (!$idmode) $id = $user->user_nickname;
@@ -908,7 +911,7 @@ function upgrade_160() {
 		}
 
 	endforeach;
-	$old_user_fields = array( 'user_firstname', 'user_lastname', 'user_icq', 'user_aim', 'user_msn', 'user_yim', 'user_idmode', 'user_ip', 'user_domain', 'user_browser', 'user_description', 'user_nickname', 'user_level' );
+	$old_user_fields = array( 'user_firstname', 'user_lastname', 'user_ushpanumber', 'user_icq', 'user_aim', 'user_msn', 'user_yim', 'user_idmode', 'user_ip', 'user_domain', 'user_browser', 'user_description', 'user_nickname', 'user_level' );
 	$wpdb->hide_errors();
 	foreach ( $old_user_fields as $old )
 		$wpdb->query("ALTER TABLE $wpdb->users DROP $old");
