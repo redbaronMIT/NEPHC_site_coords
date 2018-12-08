@@ -653,5 +653,39 @@ if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
 update_user_meta( $user_id, 'ushpa-number', $_POST['ushpa-number'] );
 }
 
+/*
+ * CREATE CONTACT FORM PDF
+* 
+*add_action( 'wpcf7_before_send_mail', 'create_contact_form_pdf' );
+*
+*function create_contact_form_pdf($cf7){
+//check if this is the right form - replace your contact form 7 id here//
+if ($cf7->id==4090){
+//include pdf generation file//
+//require_once('tcpdf/tcpdf_cf7.php');
+	require_once('../fpdf/tcpdf_cf7.php');
+	$submission = WPCF7_Submission::get_instance();
+if ($submission){
+$posted_data = $submission->get_posted_data();
+$name = $posted_data['first_name']." ".$posted_data['last_name'];
+$address = $posted_data['address'];
+$city = $posted_data['city'];
+$postcode = $posted_data['postcode'];
+$phone = $posted_data['phone'];
+// create new PDF document
+$createpdf = new CREATE_FPDFCF7();
+//upload path
+$uploads = wp_upload_dir();
+define ('PDF_FILE_PATH',$uploads['basedir'].'/cf7_pdf/');
+$fname = $createpdf->CREATE_FPDFCF7Fn($name,$address,$city,$postcode,$phone,PDF_FILE_PATH);
+//set filenames
+$pdf_filename= PDF_FILE_PATH.$fname;
+//use the same tag used in contact form 7 mail tab
+$submission->add_uploaded_file('submission_pdf', $pdf_filename);
+}
+}
+}
+ */
 
+//init theme
 navyblue_theme();
