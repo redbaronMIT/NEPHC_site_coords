@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Custom Registration Fields
+Plugin Name: _Custom: Registration USHPA
 Plugin URI: https://www.cssigniter.com/how-to-add-a-custom-user-field-in-wordpress/
 Description: Custom plugin tutorial 
 Version: 0.1
@@ -16,25 +16,27 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 //add_action( 'pms_register_form_bottom', 'crf_registration_form' );
 add_action( 'register_form', 'crf_registration_form' );
+add_action('pms_register_form_top','crf_registration_form' );
 function crf_registration_form() {
-
-	$year = ! empty( $_POST['year_of_birth'] ) ? intval( $_POST['year_of_birth'] ) : '';
+if (!is_user_logged_in() ) {
+	$ushpa = ! empty( $_POST['USHPA_number_test'] ) ? intval( $_POST['USHPA_number_test'] ) : '';
 
 	?>
 	<p>
-		<label for="year_of_birth"><?php esc_html_e( 'Year of birth', 'crf' ) ?><br/>
+		<label for="USHPA_number_test"><?php esc_html_e( 'USHPA number test', 'crf' ) ?><br/>
 			<input type="number"
-			       min="1900"
-			       max="2017"
+			       min="10000"
+			       max="99999"
 			       step="1"
-			       id="year_of_birth"
-			       name="year_of_birth"
-			       value="<?php echo esc_attr( $year ); ?>"
+			       id="USHPA_number_test"
+			       name="USHPA_number_test"
+			       value="<?php echo esc_attr( $ushpa ); ?>"
 			       class="input"
 			/>
 		</label>
 	</p>
 	<?php
+}
 }
 /*
  * Handle Errors
@@ -44,11 +46,11 @@ add_filter('registration_errors', 'crf_registration_errors', 10, 3 );
 add_shortcode("get_ushpa_register","crf_registration_form");
 function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) {
 
-	if ( empty( $_POST['year_of_birth'] ) ) {
+	if ( empty( $_POST['USHPA_number_test'] ) ) {
 		$errors->add( 'year_of_birth_error', __( '<strong>ERROR</strong>: Please enter your year of birth.', 'crf' ) );
 	}
 
-	if ( ! empty( $_POST['year_of_birth'] ) && intval( $_POST['year_of_birth'] ) < 1900 ) {
+	if ( ! empty( $_POST['USHPA_number_test'] ) && intval( $_POST['USHPA_number_test'] ) < 1900 ) {
 		$errors->add( 'year_of_birth_error', __( '<strong>ERROR</strong>: You must be born after 1900.', 'crf' ) );
 	}
 
@@ -58,9 +60,10 @@ function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) 
  * Sanitize and SAVE FIELD
  */ 
 add_action( 'user_register', 'crf_user_register' );
+add_action('pms_register_form_after_create_user', 'crf_user_register');
 function crf_user_register( $user_id ) {
-	if ( ! empty( $_POST['year_of_birth'] ) ) {
-		update_user_meta( $user_id, 'year_of_birth', intval( $_POST['year_of_birth'] ) );
+	if ( ! empty( $_POST['USHPA_number_test'] ) ) {
+		update_user_meta( $user_id, 'USHPA_number_test', intval( $_POST['USHPA_number_test'] ) );
 	}
 }
 
@@ -75,22 +78,22 @@ function crf_admin_registration_form( $operation ) {
 		return;
 	}
 
-	$year = ! empty( $_POST['year_of_birth'] ) ? intval( $_POST['year_of_birth'] ) : '';
+	$ushpa = ! empty( $_POST['USHPA_number_test'] ) ? intval( $_POST['USHPA_number_test'] ) : '';
 
 	?>
 	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
-			<th><label for="year_of_birth"><?php esc_html_e( 'Year of birth', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
+			<th><label for="USHPA_number_test"><?php esc_html_e( 'USHPA number test', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
 			<td>
 				<input type="number"
 			       min="1900"
 			       max="2017"
 			       step="1"
-			       id="year_of_birth"
-			       name="year_of_birth"
-			       value="<?php echo esc_attr( $year ); ?>"
+			       id="USHPA_number_test"
+			       name="USHPA_number_test"
+			       value="<?php echo esc_attr( $ushpa ); ?>"
 			       class="regular-text"
 				/>
 			</td>
@@ -109,11 +112,11 @@ function crf_user_profile_update_errors( $errors, $update, $user ) {
 		return;
 	}
  */
-	if ( empty( $_POST['year_of_birth'] ) ) {
+	if ( empty( $_POST['USHPA_number_test'] ) ) {
 		$errors->add( 'year_of_birth_error', __( '<strong>ERROR</strong>: Please enter your year of birth.', 'crf' ) );
 	}
 
-	if ( ! empty( $_POST['year_of_birth'] ) && intval( $_POST['year_of_birth'] ) < 1900 ) {
+	if ( ! empty( $_POST['USHPA_number_test'] ) && intval( $_POST['USHPA_number_test'] ) < 1900 ) {
 		$errors->add( 'year_of_birth_error', __( '<strong>ERROR</strong>: You must be born after 1900.', 'crf' ) );
 	}
 }
@@ -135,8 +138,8 @@ function crf_show_extra_profile_fields( $user ) {
 
 	<table class="form-table">
 		<tr>
-			<th><label for="year_of_birth"><?php esc_html_e( 'Year of birth', 'crf' ); ?></label></th>
-			<td><?php echo esc_html( get_the_author_meta( 'year_of_birth', $user->ID ) ); ?></td>
+			<th><label for="USHPA_number_test"><?php esc_html_e( 'USHPA number test', 'crf' ); ?></label></th>
+			<td><?php echo esc_html( get_the_author_meta( 'USHPA_number_test', $user->ID ) ); ?></td>
 		</tr>
 	</table>
 	<?php
@@ -149,21 +152,21 @@ add_action( 'show_user_profile', 'crf_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'crf_show_extra_profile_fields' );
 
 function crf_show_extra_profile_fields( $user ) {
-	$year = get_the_author_meta( 'year_of_birth', $user->ID );
+	$ushpa = get_the_author_meta( 'USHPA_number_test', $user->ID );
 	?>
 	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
-			<th><label for="year_of_birth"><?php esc_html_e( 'Year of birth', 'crf' ); ?></label></th>
+			<th><label for="USHPA_number_test"><?php esc_html_e( 'USHPA number test', 'crf' ); ?></label></th>
 			<td>
 				<input type="number"
-			       min="1900"
-			       max="2017"
+			       min="10000"
+			       max="999999999"
 			       step="1"
-			       id="year_of_birth"
-			       name="year_of_birth"
-			       value="<?php echo esc_attr( $year ); ?>"
+			       id="USHPA_number_test"
+			       name="USHPA_number_test"
+			       value="<?php echo esc_attr( $ushpa ); ?>"
 			       class="regular-text"
 				/>
 			</td>
@@ -183,7 +186,7 @@ function crf_update_profile_fields( $user_id ) {
 		return false;
 	}
 
-	if ( ! empty( $_POST['year_of_birth'] ) && intval( $_POST['year_of_birth'] ) >= 1900 ) {
-		update_user_meta( $user_id, 'year_of_birth', intval( $_POST['year_of_birth'] ) );
+	if ( ! empty( $_POST['USHPA_number_test'] ) && intval( $_POST['USHPA_number_test'] ) >= 10000 ) {
+		update_user_meta( $user_id, 'USHPA_number_test', intval( $_POST['USHPA_number_test'] ) );
 	}
 }

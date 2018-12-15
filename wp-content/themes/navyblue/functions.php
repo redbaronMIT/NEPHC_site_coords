@@ -686,6 +686,7 @@ $submission->add_uploaded_file('submission_pdf', $pdf_filename);
 }
 }
  */
-
+//quick and dirty action debugging
+//add_action( 'all', create_function( '', 'var_dump( current_filter());' ) );
 //init theme
 navyblue_theme();

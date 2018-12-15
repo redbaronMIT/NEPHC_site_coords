@@ -12,3 +12,4 @@ Date: December 5, 2018
 Currently you can:
 
 = do stuff =
+Test by going to http://68.183.106.84/wp-login.php?action=register
