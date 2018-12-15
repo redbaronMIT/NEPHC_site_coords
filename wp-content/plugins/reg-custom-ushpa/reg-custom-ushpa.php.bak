@@ -15,7 +15,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 //add_action( 'pms_register_form_bottom', 'crf_registration_form' );
-add_action( 'register_form', 'crf_registration_form' );
+add_action('register_form', 'crf_registration_form' );
 add_action('pms_register_form_top','crf_registration_form' );
 function crf_registration_form() {
 if (!is_user_logged_in() ) {

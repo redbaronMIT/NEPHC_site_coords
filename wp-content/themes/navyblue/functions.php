@@ -624,11 +624,12 @@ if ( ! class_exists( 'NavyBlue_Theme_Setup' ) ) {
 function navyblue_theme() {
 	return NavyBlue_Theme_Setup::get_instance();
 }
-
-add_action( 'show_user_profile', 'extra_user_profile_fields' );
-add_action( 'edit_user_profile', 'extra_user_profile_fields' );
-
-function extra_user_profile_fields( $user ) { ?>
+/*
+ *  Add custom information (first attempt at USHPA number integration)
+*add_action( 'show_user_profile', 'extra_user_profile_fields' );
+*add_action( 'edit_user_profile', 'extra_user_profile_fields' );
+*
+*function extra_user_profile_fields( $user ) { ?>
 <h3><?php _e("USHPA", "blank"); ?></h3>
 
 <table class="form-table">
@@ -652,6 +653,8 @@ if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
 
 update_user_meta( $user_id, 'ushpa-number', $_POST['ushpa-number'] );
 }
+ */
+
 
 /*
  * CREATE CONTACT FORM PDF

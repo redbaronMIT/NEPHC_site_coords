@@ -1,7 +1,7 @@
 <?php
 /*
- Plugin Name: Custom Registration Fields
- Plugin URI:
+ Plugin Name: _Custom: Registration USHPA
+ Plugin URI: https://www.cssigniter.com/how-to-add-a-custom-user-field-in-wordpress
  Description:
  Version: 0.1
  Author: Carl Sjoquist
@@ -27,7 +27,7 @@ function crf_registration_form() {
     ?>
 	<p>
 		<label for="ushpa_number"><?php esc_html_e( 'USHPA#', 'crf' ) ?><br/>
-			<input type="text"
+			<input type="number"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
@@ -110,13 +110,14 @@ function crf_admin_registration_form( $operation ) {
     $ushpa = ! empty( $_POST['ushpa_number'] ) ? intval( $_POST['ushpa_number'] ) : '';
     
     ?>
-	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
+	// add new section in user profile
+	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
 			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA#:', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
 			<td>
-			<input type="text"
+			<input type="number"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
@@ -183,13 +184,13 @@ add_action( 'edit_user_profile', 'crf_show_extra_profile_fields' );
 function crf_show_extra_profile_fields( $user ) {
     $ushpa = get_the_author_meta( 'ushpa_number', $user->ID );
     ?>
-	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
 			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA#:', 'crf' ); ?></label></th>
 			<td>
-			<input type="text"
+			<input type="number"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
