@@ -214,41 +214,10 @@ function crf_update_profile_fields( $user_id ) {
 		return false;
 	}
 
-	// missing value
-	if ( empty( $_POST['ushpa_number'] ) ) {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: Please enter your USHPA#.', 'crf' ) );
-	    return $errors;
-	}
-	
-	// out of range or invalid data type
-	if ( ! empty( $_POST['ushpa_number'] )
-	&& ((intval( $_POST['ushpa_number'] ) < 1 )
-	|| intval( $_POST['ushpa_number'] ) > 999999 )) {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: The USHPA# you entered is invalid.  Please re-enter.', 'crf' ) );
-	    return $errors;
-	}
-	
-	// check web service
-	$ushpa_url = "https://www.ushpa.org/ushpa_validation.asp?ushpa=" . $_POST['ushpa_number'];
-	$retval = file_get_contents($ushpa_url);
-	
-	// ushpa number not in effect, not found...?
-	if ( $retval === "1900-1-1") {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: The USHPA# you entered is not current.  Please re-enter.', 'crf' ) );
-	    return $errors;
-	}
-	
-	$ushpa_expires_date = strtotime("$retval");
-	$today = strtotime(date("m/d/Y"));
-	
-	// expired?
-	if ($today > $ushpa_expires_date) {
-	    $errors->add( 'ushpa_number_error', __( "<strong>ERROR</strong>: The USHPA# you entered expired as of " . $retval ));
-	    return $errors;
-	}
-	
-	// uncomment for debugging
-	// $errors->add( 'ushpa_number_error', __( "$retval . $ushpa_expires_date . $today", 'crf' ) );
+    if ( ! empty( $_POST['ushpa_number'] )) {
+		update_user_meta( $user_id, 'ushpa_number', intval( $_POST['ushpa_number'] ) );
+    }
+
 }
 
 
