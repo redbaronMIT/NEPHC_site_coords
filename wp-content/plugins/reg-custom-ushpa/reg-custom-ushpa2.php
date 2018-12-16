@@ -1,7 +1,7 @@
 <?php
 /*
- Plugin Name: _Custom: Registration USHPA
- Plugin URI: https://www.cssigniter.com/how-to-add-a-custom-user-field-in-wordpress
+ Plugin Name: Custom Registration Fields
+ Plugin URI:
  Description:
  Version: 0.1
  Author: Carl Sjoquist
@@ -15,7 +15,7 @@
  */
 
 add_action( 'register_form', 'crf_registration_form' );
-add_action('pms_register_form_top','crf_registration_form' );
+add_action('pms_register_form_bottom','crf_registration_form' );
 
 function crf_registration_form() {
     
@@ -27,7 +27,7 @@ function crf_registration_form() {
     ?>
 	<p>
 		<label for="ushpa_number"><?php esc_html_e( 'USHPA#', 'crf' ) ?><br/>
-			<input type="number"
+			<input type="text"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
@@ -38,6 +38,58 @@ function crf_registration_form() {
 	<?php
     }
 }
+
+add_action('pms_register_form_after_fields', 'pms_ushpa_validation_error_display');
+function pms_ushpa_validation_error_display($atts) {
+    $field_errors = pms_errors()->get_error_messages('ushpa_number');
+    
+    $html = pms_display_field_errors( $field_errors, true );
+    
+    echo $html;
+}
+
+add_action( 'pms_register_form_validation', 'crf_pms_registration_errors', 10, 3 );
+
+function crf_pms_registration_errors () {
+    
+    // missing value
+    if ( empty( $_POST['ushpa_number'] ) ) {
+        pms_errors()->add( 'ushpa_number', __( '<strong>ERROR</strong>: Please enter your USHPA#.', 'paid-member-subscriptions' ) );
+        return; 
+    }
+    
+    // out of range or invalid data type
+    if ( ! empty( $_POST['ushpa_number'] )
+    && ((intval( $_POST['ushpa_number'] ) < 1 )
+    || intval( $_POST['ushpa_number'] ) > 999999 )) {
+        pms_errors()->add( 'ushpa_number', __( '<strong>ERROR</strong>: The USHPA# you entered is invalid.  Please re-enter.', 'paid-member-subscriptions' ) );
+        return;
+    }
+    
+    // check web service
+    $ushpa_url = "https://www.ushpa.org/ushpa_validation.asp?ushpa=" . $_POST['ushpa_number'];
+    $retval = file_get_contents($ushpa_url);
+    
+    // ushpa number not in effect, not found...?
+    if ( $retval === "1900-1-1") {
+        pms_errors()->add( 'ushpa_number', __( '<strong>ERROR</strong>: The USHPA# you entered is not current.  Please re-enter.', 'paid-member-subscriptions' ) );
+        return;
+    }
+    
+    $ushpa_expires_date = strtotime("$retval");
+    $today = strtotime(date("m/d/Y"));
+    
+    // expired?
+    if ($today > $ushpa_expires_date) {
+        pms_errors()->add( 'ushpa_number', __( "<strong>ERROR</strong>: The USHPA# you entered expired as of " . $retval ));
+        return;
+    }
+    
+    // uncomment for debugging
+    // pms_errors()->add( 'ushpa_number', __( "$retval . $ushpa_expires_date . $today", 'paid-member-subscriptions' ) );
+    
+}
+
 
 add_filter( 'registration_errors', 'crf_registration_errors', 10, 3 );
 add_shortcode("get_ushpa_register","crf_registration_form");
@@ -79,7 +131,7 @@ function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) 
     }
     
     // uncomment for debugging
-    // $errors->add( 'ushpa_number_error', __( "$retval . $ushpa_expires_date . $today", 'crf' ) );
+    $errors->add( 'ushpa_number_error', __( "$retval . $ushpa_expires_date . $today", 'crf' ) );
     
     
     return $errors;
@@ -110,14 +162,13 @@ function crf_admin_registration_form( $operation ) {
     $ushpa = ! empty( $_POST['ushpa_number'] ) ? intval( $_POST['ushpa_number'] ) : '';
     
     ?>
-	// add new section in user profile
-	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
 			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA#:', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
 			<td>
-			<input type="number"
+			<input type="text"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
@@ -184,13 +235,13 @@ add_action( 'edit_user_profile', 'crf_show_extra_profile_fields' );
 function crf_show_extra_profile_fields( $user ) {
     $ushpa = get_the_author_meta( 'ushpa_number', $user->ID );
     ?>
-	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
 			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA#:', 'crf' ); ?></label></th>
 			<td>
-			<input type="number"
+			<input type="text"
 			       id="ushpa_number"
 			       name="ushpa_number"
 			       value="<?php echo esc_attr( $ushpa ); ?>"
@@ -202,53 +253,18 @@ function crf_show_extra_profile_fields( $user ) {
 	<?php
 }
 
-/**
- * Actually SAVING THE FIELD
- */
+
 add_action( 'personal_options_update', 'crf_update_profile_fields' );
 add_action( 'edit_user_profile_update', 'crf_update_profile_fields' );
 
 function crf_update_profile_fields( $user_id ) {
-
-    if ( ! current_user_can( 'edit_user', $user_id ) ) {
+	if ( ! current_user_can( 'edit_user', $user_id ) ) {
 		return false;
 	}
 
-	// missing value
-	if ( empty( $_POST['ushpa_number'] ) ) {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: Please enter your USHPA#.', 'crf' ) );
-	    return $errors;
+	if ( ! empty( $_POST['ushpa_number'] )) {
+		update_user_meta( $user_id, 'ushpa_number', intval( $_POST['ushpa_number'] ) );
 	}
-	
-	// out of range or invalid data type
-	if ( ! empty( $_POST['ushpa_number'] )
-	&& ((intval( $_POST['ushpa_number'] ) < 1 )
-	|| intval( $_POST['ushpa_number'] ) > 999999 )) {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: The USHPA# you entered is invalid.  Please re-enter.', 'crf' ) );
-	    return $errors;
-	}
-	
-	// check web service
-	$ushpa_url = "https://www.ushpa.org/ushpa_validation.asp?ushpa=" . $_POST['ushpa_number'];
-	$retval = file_get_contents($ushpa_url);
-	
-	// ushpa number not in effect, not found...?
-	if ( $retval === "1900-1-1") {
-	    $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: The USHPA# you entered is not current.  Please re-enter.', 'crf' ) );
-	    return $errors;
-	}
-	
-	$ushpa_expires_date = strtotime("$retval");
-	$today = strtotime(date("m/d/Y"));
-	
-	// expired?
-	if ($today > $ushpa_expires_date) {
-	    $errors->add( 'ushpa_number_error', __( "<strong>ERROR</strong>: The USHPA# you entered expired as of " . $retval ));
-	    return $errors;
-	}
-	
-	// uncomment for debugging
-	// $errors->add( 'ushpa_number_error', __( "$retval . $ushpa_expires_date . $today", 'crf' ) );
 }
 
 
