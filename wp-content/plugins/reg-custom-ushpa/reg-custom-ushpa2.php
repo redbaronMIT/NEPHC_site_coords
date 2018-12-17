@@ -1,6 +1,6 @@
 <?php
 /*
- Plugin Name: Custom Registration Fields
+ Plugin Name: _Custom: Registration Fields
  Plugin URI:
  Description:
  Version: 0.2
@@ -21,7 +21,8 @@ $ushpa_number_bad_retval = "1900-1-1";  // returned when number is not in effect
  */
 
 add_action( 'register_form', 'crf_registration_form' );
-add_action('pms_register_form_bottom','crf_registration_form' );
+//add_action('pms_register_form_bottom','crf_registration_form' );
+add_action('pms_register_form_after_fields','crf_registration_form' );
 function crf_registration_form() {
     
     if (!is_user_logged_in() ) 
