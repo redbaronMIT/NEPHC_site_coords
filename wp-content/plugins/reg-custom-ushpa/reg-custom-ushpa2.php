@@ -177,7 +177,7 @@ function crf_admin_registration_form( $operation ) {
     $ushpa = ! empty( $_POST['ushpa_number'] ) ? intval( $_POST['ushpa_number'] ) : '';
     
     ?>
-	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
@@ -209,7 +209,7 @@ add_action( 'edit_user_profile', 'crf_show_extra_profile_fields' );
 function crf_show_extra_profile_fields( $user ) {
     $ushpa = get_the_author_meta( 'ushpa_number', $user->ID );
     ?>
-	<h3><?php esc_html_e( 'Personal Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>

@@ -418,8 +418,8 @@ if ( is_multisite() && is_network_admin() && ! IS_PROFILE_PAGE && current_user_c
 </tr>
 
 <tr class="user-uspha-number-wrap">
-	<th><label for="ushpa_number"><?php _e('USHPA#'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
-	<td><input type="text" name="ushpa_number" id="ushpa_number" value="<?php echo esc_attr($profileuser->ushpa_number) ?>" class="regular-text" /></td>
+	<th><label for="ushpa_number"><?php _e('USHPA#'); ?> <span class="description"><?php _e('(*)'); ?></span></label></th>
+	<td><input type="text" name="ushpa_number" id="ushpa_number" value="<?php echo esc_attr($profileuser->ushpa_number) ?>" disabled="disabled" class="regular-text" /><span class="description"><?php _e('See USHPA information below'); ?></span> </td>
 </tr>
 
 <tr class="user-display-name-wrap">
