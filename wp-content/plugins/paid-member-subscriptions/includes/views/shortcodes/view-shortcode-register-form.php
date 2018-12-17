@@ -106,14 +106,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             <?php pms_display_field_errors( $field_errors ); ?>
         </li>
 
-        <?php $field_errors = pms_errors()->get_error_messages('ushpa-number'); ?>
-        <li class="pms-field pms-ushpa-number-field <?php echo ( !empty( $field_errors ) ? 'pms-field-error' : '' ); ?>">
-            <label for="pms_ushpa-number"><?php echo apply_filters( 'pms_register_form_label_ushpa-number', __( 'USHPA# *', 'paid-member-subscriptions' ) ); ?></label>
-            <input id="pms_ushpa-number" name="ushpa-number" type="number" />
-
-            <?php pms_display_field_errors( $field_errors ); ?>
-        </li>
-
         <?php do_action( 'pms_register_form_after_fields', $atts ); ?>
 
         <?php
