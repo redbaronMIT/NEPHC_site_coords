@@ -30,22 +30,8 @@ function display_USHPA_iframe() {
     //	<?php
 	    //
 ?>
-<div id="wrap">
-	  <iframe id="ushpadisplay" 
-	    style = "border: none; max-width: 100%; min-width: 100px;" 
-	    src = "<?php echo htmlspecialchars($weburl); ?>" 
-	    #src = "https://codex.wordpress.org/Pages"
-	    width = "800" 
-	    height = "435" 
-	    frameborder = "10" 
-	    marginwidth = "10" 
-	    marginheight = "10"> 
-	   #scrolling = "vertical" 
-   #allowfullscreen = "allowfullscreen"
-	</iframe>
-</div>
-test test
-<embed height="560" width="315" src="<?php echo htmlspecialchars($weburl); ?>" /
+<embed height="435" width="100%" src="<?php echo htmlspecialchars($weburl); ?>" 
+
 <?php
 //	    echo "<iframe src='$weburl' width='900' height='600' scrolling=\"yes\" style='overflow:hidden; margin-top:-4px; margin-left:-4px; border:none;'>ushpa info</iframe>";
 //	    echo "iframe src=\"$weburl\" width=\"900\" height=\"500\" scrolling=\"yes\"";
