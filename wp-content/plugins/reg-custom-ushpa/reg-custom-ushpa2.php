@@ -31,7 +31,8 @@ function crf_registration_form_ushpa() {
         
         ?>
 	<p>
-		<label for="ushpa_number"><?php esc_html_e( 'USHPA#: ', 'crf' ) ?><br/>
+		<li>
+		<label for="ushpa_number"><?php esc_html_e( 'USHPA# *', 'crf' ) ?><br/>
 			<input type="text"
 			       id="ushpa_number"
 			       name="ushpa_number"
@@ -39,6 +40,7 @@ function crf_registration_form_ushpa() {
 			       class="input"
 			/>
 		</label>
+		</li>
 	</p>
 	<?php
     }
@@ -343,7 +345,6 @@ function crf_show_confirm_contact_ok( $user ) {
 	</table>
 	<?php
 }
-
 
 
 // causes ushpa number and contact_ok to be included in update (to db)
