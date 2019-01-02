@@ -1,6 +1,6 @@
 <?php
 /*
- Plugin Name: _Custom: USHPA shortcodes
+ Plugin Name: _Custom: NEPHC shortcodes
  Plugin URI:
  Description:
  Version: 0.1
@@ -38,4 +38,16 @@ function display_USHPA_iframe() {
 	    echo "<a href='$weburl'>$weburl</a>";
     }
 }
-//add_shortcode("display_USHPA","display_USHPA_iframe");
+
+
+/**
+ * Shortcode to show content only to visitors
+ * Source: http://justintadlock.com/archives/2009/05/09/using-shortcodes-to-show-members-only-content
+ */
+add_shortcode( 'visitor', 'visitor_check_shortcode' );
+
+function visitor_check_shortcode( $atts, $content = null ) {
+	 if ( ( !is_user_logged_in() && !is_null( $content ) ) || is_feed() )
+		return $content;
+	return '';
+}
