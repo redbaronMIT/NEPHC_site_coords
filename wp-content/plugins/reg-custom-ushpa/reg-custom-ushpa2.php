@@ -60,20 +60,29 @@ function crf_registration_form_contact_ok( $user ) {
     {
         $contact_ok = ! empty( $_POST['contact_ok'] ) ? $_POST['contact_ok'] : '';
     
-    ?>
+?>
+<style>
+     table {
+        border-width: medium;
+      }
+    </style>
+
+<li>
 	<table class="form-table">
 		<tr>
-			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address </label></th>
 			<td>
-			<input type="checkbox"
-			       id="contact_ok"
-			       name="contact_ok"
-			       value="true"
-			       class="input"
-			/>
-			</td>
+                        <input type="checkbox"
+                               id="contact_ok"
+                               name="contact_ok"
+                               value="true"
+                               class="input"
+                        />
+                        </td>
+
+			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address </label></th>
 		</tr>
 	</table>
+</li>
 	<?php
     }
 }

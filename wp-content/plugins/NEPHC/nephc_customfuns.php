@@ -51,3 +51,19 @@ function visitor_check_shortcode( $atts, $content = null ) {
 		return $content;
 	return '';
 }
+
+/**
+ * function to add user content to header
+ */
+
+add_action('top_message_before_print','add_custom_header_info_basic');
+
+function add_custom_header_info_basic(){
+	global $add_custom_top_message;
+	$add_custom_top_message = 'bob';
+	if ( is_user_logged_in() ) {
+		$user = wp_get_current_user();
+		$add_custom_top_message = 'Welcome, <strong><a href="http://68.183.106.84/my-account/">'. $user->display_name.'!</a></strong>';
+	} else {
+		$add_custom_top_message = '<a href="http://68.183.106.84/members_only/">Login here</a>';}
+}
