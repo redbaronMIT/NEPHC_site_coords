@@ -372,5 +372,6 @@ function crf_update_extra_profile_fields( $user_id ) {
 	if ( ! empty( $_POST['contact_ok'] )) {
 	    update_user_meta( $user_id, 'contact_ok', $_POST['contact_ok'] );
 	}
+
 }
 
