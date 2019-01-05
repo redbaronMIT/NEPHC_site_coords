@@ -401,8 +401,9 @@ Class PMS_Shortcodes {
         /**
          * Filters content to display at the bottom of the login form.
          */
-        $login_form_bottom = apply_filters( 'login_form_bottom', '', $args );
+	$login_form_bottom = apply_filters( 'login_form_bottom', '', $args );
 
+	/* set form action here <jwallace> */
         $form = '
 		<form name="' . $args['form_id'] . '" id="' . $args['form_id'] . '" action="" method="post">
 			' . $login_form_top . '
