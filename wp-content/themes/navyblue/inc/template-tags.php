@@ -15,13 +15,18 @@
  * @return void
  */
 function navyblue_top_message( $format = '%s' ) {
+	global $add_custom_top_message;
 	$message = get_theme_mod( 'top_panel_text', navyblue_theme()->customizer->get_default( 'top_panel_text' ) );
 
 	if ( ! $message ) {
 		return;
 	}
-
-	printf( $format, wp_kses( $message, wp_kses_allowed_html( 'post' ) ) );
+	do_action('top_message_before_print');
+		if( ! $add_custom_top_message){
+			printf( $format, wp_kses( $message, wp_kses_allowed_html( 'post' ) ) );
+		} else {
+			printf( $format, wp_kses( $message.$add_custom_top_message, wp_kses_allowed_html( 'post' ) ) );
+		}
 }
 
 /**
