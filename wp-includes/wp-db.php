@@ -58,7 +58,7 @@ class wpdb {
 	 * @since 0.71
 	 * @var bool
 	 */
-	var $show_errors = false;
+	var $show_errors = true;
 
 	/**
 	 * Whether to suppress errors during the DB bootstrapping.
@@ -66,7 +66,7 @@ class wpdb {
 	 * @since 2.5.0
 	 * @var bool
 	 */
-	var $suppress_errors = false;
+	var $suppress_errors = true;
 
 	/**
 	 * The last error during query.
