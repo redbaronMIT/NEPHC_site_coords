@@ -51,6 +51,12 @@ function get_ushpa_expiration_date( $ushpa_num ) {
 
 function nephc_member_report () {
     
+   
+    if ( ! current_user_can( 'list_users' ) ) {
+        return;
+    }
+    
+    
     global $wpdb;
     
     $qry = 'select  t1.display_name, 
@@ -67,7 +73,7 @@ function nephc_member_report () {
     
     $rows = $wpdb->get_results( $qry, ARRAY_A );
     
-    // Prepare output to be returned to replace shortcode
+    // Prepare output to be returned to replace shortcodeA
     $output = '';
     $output .= '<div class="NEPHC-member-list"><table>';
     $output .= '<h3>NEPHC Member List</h3><br>';
@@ -137,3 +143,4 @@ SELECT   t1.id, t1.user_email,
 */    
     
     
+
