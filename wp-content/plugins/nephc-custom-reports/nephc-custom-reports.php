@@ -53,11 +53,16 @@ function nephc_member_report () {
     
     global $wpdb;
     
-    $qry = 'select  t1.display_name, t1.ID, t1.user_email,   
-            t2.start_date, t2.expiration_date,
-            MAX(CASE WHEN t3.meta_key = "ushpa_number" THEN meta_value END) AS ushpa_number  
-            from wp_users as t1 inner join wp_pms_member_subscriptions as t2 on t1.ID = t2.id
-                        inner join wp_usermeta as t3 on t1.ID = t3.user_id group by t1.id; ';
+    $qry = 'select  t1.display_name, 
+                    t1.ID, 
+                    t1.user_email, 
+                    t2.status,   
+                    t2.expiration_date,
+                    MAX(CASE WHEN t3.meta_key = "ushpa_number" THEN meta_value END) AS ushpa_number  
+                    from wp_users as t1 left join wp_pms_member_subscriptions as t2 on t1.ID = t2.user_id
+                                        left join wp_usermeta as t3 on t1.ID = t3.user_id 
+                    group by t1.id, t2.status, t2.expiration_date 
+                    order by t1.display_name; ';
     
     
     $rows = $wpdb->get_results( $qry, ARRAY_A );
@@ -73,7 +78,7 @@ function nephc_member_report () {
         $output .= '<th style="width: 200px">Name</th>';
         // $output .= '<th style="width: 50px">ID</th>';
         $output .= '<th style="width: 220px">Email</th>';
-        // $output .= '<th style="width: 150px">NEPHC Start</th>';
+        $output .= '<th style="width: 150px">Status</th>';
         $output .= '<th style="width: 130px">NEPHC Expires</th>';
         $output .= '<th style="width: 110px">USHPA#</th>';
         $output .= '<th style="width: 130px">USHPA Expires</th>';
@@ -87,7 +92,7 @@ function nephc_member_report () {
             // $output .= '<td>' . $row['ID'] . '</td>';
             $output .= '<td>' . $row['user_email'] . '</td>';
             
-            // $output .= '<td>' . get_trimdate( $row['start_date'] ) . '</td>';
+            $output .= '<td>' . $row['status'] . '</td>';
             $output .= '<td>' . get_trimdate( $row['expiration_date'] ) . '</td>';
             
             $output .= '<td>' . $row['ushpa_number'] . '</td>';
@@ -106,7 +111,14 @@ function nephc_member_report () {
     return $output; 
     
 }
-    
+
+
+/*
+delete from wp_usermeta where user_id not in (select ID from wp_users);
+delete from wp_pms_member_subscriptions where user_id not in (select ID from wp_users);
+*/
+
+
 /*
 select  t1.display_name, t1.ID, t1.user_email,   
         t2.start_date, t2.expiration_date,
