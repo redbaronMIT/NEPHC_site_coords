@@ -22,7 +22,9 @@ $ushpa_number_bad_retval = "1900-1-1";  // returned when number is not in effect
 
 add_action('register_form', 'crf_registration_form_ushpa', 9, 1 );
 add_action('pms_register_form_after_fields','crf_registration_form_ushpa', 9, 1 );
+// used in the new user pms-register form
 function crf_registration_form_ushpa() {
+    
     
     if (!is_user_logged_in() )
     {
@@ -52,6 +54,7 @@ function crf_registration_form_ushpa() {
 
 add_action('register_form', 'crf_registration_form_contact_ok', 10, 1 );
 add_action('pms_register_form_after_fields','crf_registration_form_contact_ok', 10, 1 );
+// used in the new user pms-register form
 function crf_registration_form_contact_ok( $user ) {
 
     $contact_ok = '';
@@ -160,7 +163,6 @@ function crf_pms_registration_errors () {
 }
 
 
-add_filter( 'registration_errors', 'crf_registration_errors', 10, 3 ); // validates wp-login.php/?action=register
 add_action( 'user_profile_update_errors', 'crf_registration_errors', 10, 3 ); // validates user-edit.php  
 add_shortcode("get_ushpa_register","crf_registration_form");
 
@@ -230,10 +232,9 @@ function crf_user_register( $user_id ) {
 }
 
 /**
- * Back end registration (user edit)
+ * Back end registration (user edit), used in wp-admin/user-new.php
  */
-
-add_action( 'user_new_form', 'crf_ushpa_admin_registration_form', 9, 1 );
+add_action( 'user_new_form', 'crf_ushpa_admin_registration_form' );
 function crf_ushpa_admin_registration_form( $operation ) {
     if ( 'add-new-user' !== $operation ) {
         // $operation may also be 'add-existing-user'
@@ -243,11 +244,9 @@ function crf_ushpa_admin_registration_form( $operation ) {
     $ushpa = ! empty( $_POST['ushpa_number'] ) ? intval( $_POST['ushpa_number'] ) : '';
     
     ?>
-	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
-
 	<table class="form-table">
 		<tr>
-			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA# :', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
+			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA# ', 'crf' ); ?></label> <span class="description"><?php esc_html_e( '(required)', 'crf' ); ?></span></th>
 			<td>
 			<input type="text"
 			       id="ushpa_number"
@@ -255,29 +254,8 @@ function crf_ushpa_admin_registration_form( $operation ) {
 			       value="<?php echo esc_attr( $ushpa ); ?>"
 			       class="input"
 			/>
-			</td>
+		</td>
 		</tr>
-	</table>
-	<?php
-}
-
-
-/*
- * Add check box to new user register from
- */
-
-add_action( 'user_new_form', 'crf_contact_ok_admin_registration_form', 10, 1 );
-function crf_contact_ok_admin_registration_form( $user ) {
-    
-    if ( 'add-new-user' !== $operation ) {
-        // $operation may also be 'add-existing-user'
-        return;
-    }
-    
-    $contact_ok = ! empty( $_POST['contact_ok'] ) ? $_POST['contact_ok'] : '';
-    
-    ?>
-	<table class="form-table">
 		<tr>
 			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address </label></th>
 			<td>
@@ -294,6 +272,8 @@ function crf_contact_ok_admin_registration_form( $user ) {
 }
 
 
+
+
 // includes update on ushpa number to user meta data
 add_action( 'edit_user_created_user', 'crf_user_register' );
 
@@ -302,17 +282,17 @@ add_action( 'edit_user_created_user', 'crf_user_register' );
  */
 add_action( 'show_user_profile', 'crf_show_extra_profile_fields', 9, 1 );
 add_action( 'edit_user_profile', 'crf_show_extra_profile_fields', 9, 1 );
-
+// used in wp-admin/profile.php
 function crf_show_extra_profile_fields( $user ) {
     
     $ushpa = ! empty( $_POST['ushpa_number'] ) ? intval( $_POST['ushpa_number'] ) : '';
     
     ?>
-	<h3><?php esc_html_e( 'USHPA Information', 'crf' ); ?></h3>
+	<h3><?php esc_html_e( 'Additional NEPHC member information', 'crf' ); ?></h3>
 
 	<table class="form-table">
 		<tr>
-			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA#:', 'crf' ); ?></label></th>
+			<th><label for="ushpa_number"><?php esc_html_e( 'USHPA# (*)', 'crf' ); ?></label></th>
 			<td>
 			<input type="text"
 			       id="ushpa_number"
@@ -331,17 +311,15 @@ function crf_show_extra_profile_fields( $user ) {
  */
 add_action( 'show_user_profile', 'crf_show_confirm_contact_ok', 10, 1 );
 add_action( 'edit_user_profile', 'crf_show_confirm_contact_ok', 10, 1 );
-
+// used in wp-admin/profile.php
 function crf_show_confirm_contact_ok( $user ) {
     
     $contact_ok = ! empty( $_POST['contact_ok'] ) ? $_POST['contact_ok'] : '';
     
     ?>
-	<h3><?php esc_html_e( 'Email contact', 'crf' ); ?></h3>
-	
 	<table class="form-table">
 		<tr>
-			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address: </label></th>
+			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address (*)</label></th>
 			<td>
 			<input type="checkbox"
 			       id="contact_ok"
@@ -372,5 +350,7 @@ function crf_update_extra_profile_fields( $user_id ) {
 	if ( ! empty( $_POST['contact_ok'] )) {
 	    update_user_meta( $user_id, 'contact_ok', $_POST['contact_ok'] );
 	}
+
 }
+
 
