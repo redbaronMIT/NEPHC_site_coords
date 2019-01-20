@@ -1,0 +1,3 @@
+.instagram__cover {
+	background-color: @alpha( $invert_h5_color, 51 );
+}

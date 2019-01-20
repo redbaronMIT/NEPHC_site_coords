@@ -1,0 +1,66 @@
+.subscribe-block__submit.subscribe-block__submit {
+	font-family: @font_family($button_font_family);
+	font-weight: $button_font_weight;
+	color: $regular_button_text_color;
+	border-color: $regular_accent_color_1;
+}
+
+.footer-full-width-area.widget-area .subscribe-block__input[type='email']{
+	border-bottom-color: $regular_accent_color_1;
+}
+
+.subscribe-block__submit {
+	color: $regular_accent_color_1;
+
+}
+.subscribe-block__submit:hover {
+	color: $invert_accent_color_1;
+}
+.subscribe-block__submit:before{
+	background-color: $regular_accent_color_1;
+}
+
+.invert .subscribe-block__submit{
+	color: $invert_link_color;
+}
+.invert .subscribe-block__submit:before{
+	background-color: $invert_accent_color_1;
+}
+.subscribe-block .widget-title{
+	font-size: $h2_font_size{px};
+	font-weight: $h2_font_weight;
+}
+.subscribe-block .subscribe-block__message, .follow-block .follow-block__message{
+	font-size: $h5_font_size{px};
+}
+div .follow-block .menu-item a {
+	font-family: @font_family($button_font_family);
+	font-weight: $button_font_weight;
+	color: $regular_button_text_color;
+	border-color: $invert_text_color;
+	background-color: $invert_text_color;
+}
+div .follow-block .menu-item a:hover {
+	color: $invert_accent_color_1;
+	border-color: $regular_accent_color_1;
+	background-color: $regular_accent_color_1;
+}
+.sidebar .follow-block .menu-item a {
+	color: $invert_accent_color_1;
+	border-color: $regular_accent_color_1;
+	background-color: $regular_accent_color_1;
+}
+.sidebar .follow-block .menu-item a:hover {
+	color: $invert_accent_color_1;
+	border-color: $regular_accent_color_2;
+	background-color: $regular_accent_color_2;
+}
+
+.follow-block .widget-title{
+	font-size: $h2_font_size{px};
+	font-weight: $h2_font_weight;
+}
+
+.sidebar .subscribe-block__input[type='email']{
+	border-bottom-color:$regular_accent_color_1;
+}

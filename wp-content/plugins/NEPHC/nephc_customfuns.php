@@ -63,7 +63,8 @@ function add_custom_header_info_basic(){
 	$add_custom_top_message = 'bob';
 	if ( is_user_logged_in() ) {
 		$user = wp_get_current_user();
-		$add_custom_top_message = 'Welcome, <strong><a href="http://68.183.106.84/my-account/">'. $user->display_name.'!</a></strong>';
+		$add_custom_top_message = 'Welcome, <strong><a href="http://nephc.org/my-account/">'. $user->display_name.'!</a></strong>';
 	} else {
-		$add_custom_top_message = '<a href="http://68.183.106.84/members_only/">Login here</a>';}
+		$add_custom_top_message = '<a href="http://nephc.org/members_only/">Login here</a>';}
 }
+

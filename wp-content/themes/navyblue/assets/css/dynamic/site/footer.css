@@ -1,0 +1,49 @@
+/* #Footer */
+.site-footer {
+	background-color: $footer_bg;
+}
+.site-footer p{
+	color: $regular_text_color;
+}
+
+.site-footer .invert p{
+	color: $invert_text_color;
+}
+
+.footer-area-wrap {
+	background-color: $footer_widgets_bg;
+}
+.footer-area-wrap ul li a {
+	color: $regular_link_color;
+}
+.footer-area-wrap ul li a:hover {
+	color: $regular_link_hover_color;
+}
+#footer-navigation ul li a, .footer-menu ul li:before {
+	color: $invert_link_color;
+}
+
+#footer-navigation ul li a:hover {
+	color: $regular_link_hover_color;
+}
+.site-info {
+	color: $invert_text_color;
+}
+.site-info a:hover {
+	color: $regular_text_color;
+}
+
+.footer-full-width-area-wrap{
+	background: $invert_accent_color_2;
+}
+
+.footer-area-wrap.invert a { color: $invert_link_color; }
+.footer-area-wrap.invert a:hover { color: $invert_link_hover_color}
+
+.footer-area .widget ul li a {
+    color: $regular_link_color;
+}
+
+.footer-area .widget ul li a:hover {
+	color: $invert_link_hover_color;
+}
