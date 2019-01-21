@@ -653,7 +653,7 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 					$attachment['options']['flatten'] == true;
 				
 				$filepath = get_attached_file( $attachment_id );
-				$destfile = self::create_wpcf7_tmp_filepath('NEPHC_'.$processed_data['FullName']. basename( $filepath ) );
+				$destfile = self::create_wpcf7_tmp_filepath('NEPHC_'.$processed_data['FullName'].'_'. basename( $filepath ) );
 				
 				try
 				{
