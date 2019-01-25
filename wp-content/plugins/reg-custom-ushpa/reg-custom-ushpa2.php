@@ -176,7 +176,14 @@ function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) 
         $errors->add( 'ushpa_number_error', __( '<strong>ERROR</strong>: Please enter your USHPA#.', 'crf' ) );
         return $errors;
     }
-        
+
+    /*
+     * Allow '00000' ushpa number, otherwise do checks
+     */
+    if ( ! empty( $_POST['ushpa_number']) && ($_POST['ushpa_number']=='0000')){
+	    //allow non user to create account
+    } else{ // start of else
+
     // out of range or invalid data type
     if ( ! empty( $_POST['ushpa_number'] ) 
         && ((intval( $_POST['ushpa_number'] ) < 1 ) 
@@ -203,7 +210,9 @@ function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) 
         $errors->add( 'ushpa_number_error', __( "<strong>ERROR</strong>: The USHPA# you entered expired as of " . $retval ));
         return $errors;
     }
-    
+    } //end of else
+
+
     // missing value for contact_ok
     if ( empty( $_POST['contact_ok'] ) ) {
         $errors->add( 'contact_ok', __( '<strong>ERROR</strong>: NEPHC must be allowed to contact you using your email address.', 'paid-member-subscriptions' ) );
