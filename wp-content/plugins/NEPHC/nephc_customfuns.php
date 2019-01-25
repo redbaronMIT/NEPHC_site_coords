@@ -68,3 +68,39 @@ function add_custom_header_info_basic(){
 		$add_custom_top_message = '<a href="http://nephc.org/members_only/">Login here</a>';}
 }
 
+/**
+ * Shortcode to print out message and user name
+ */
+add_shortcode('return_welcome_message','return_welcome_message');
+function return_welcome_message(){
+        if ( is_user_logged_in() ) {
+                $user = wp_get_current_user();
+                $display_message = 'Welcome, <strong><a href="http://nephc.org/my-account/">'. $user->display_name.'!</a></strong>';
+        } else {
+                $display_message = '<a href="http://nephc.org/members_only/">Login here</a>';}
+	return $display_message;
+}
+
+/**
+ * List child pages
+ */
+function wpb_list_child_pages() {
+
+global $post;
+
+if ( is_page() && $post->post_parent )
+
+    $childpages = wp_list_pages( 'sort_column=menu_order&title_li=&child_of=' . $post->post_parent . '&echo=0' );
+else
+    $childpages = wp_list_pages( 'sort_column=menu_order&title_li=&child_of=' . $post->ID . '&echo=0' );
+
+if ( $childpages ) {
+
+    $string = '<ul>' . $childpages . '</ul>';
+}
+
+return $string;
+
+}
+
+add_shortcode('wpb_childpages', 'wpb_list_child_pages');
