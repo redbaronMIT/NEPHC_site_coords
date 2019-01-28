@@ -119,4 +119,13 @@ function my_password_form() {
     return $o;
 }
 add_filter( 'the_password_form', 'my_password_form' );
+
+add_shortcode('dump_POST','dump_post_variable');
+/*
+ * Dump $_POST
+ */
+function dump_post_variable(){
+	var_dump($_POST);
+}
+
 ?>
