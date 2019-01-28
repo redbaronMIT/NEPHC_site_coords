@@ -855,7 +855,6 @@ function crf_show_confirm_contact_ok( $user ) {
     
     $contact_ok = get_the_author_meta( 'contact_ok', $user->ID );
  //! empty( $_POST['contact_ok'] ) ? $_POST['contact_ok'] : '';
-   echo $contact_ok;
     ?>
 	<table class="form-table">
 		<tr>
