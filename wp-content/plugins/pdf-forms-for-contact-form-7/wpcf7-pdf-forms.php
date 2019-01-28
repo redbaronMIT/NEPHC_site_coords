@@ -3,7 +3,7 @@
 Plugin Name: PDF Forms Filler for Contact Form 7
 Plugin URI: https://github.com/maximum-software/wpcf7-pdf-forms
 Description: Create Contact Form 7 forms from PDF forms.  Get PDF forms filled automatically and attached to email messages upon form submission on your website.  Embed images in PDF files.  Uses Pdf.Ninja API for working with PDF files.  See tutorial video for a demo.
-Version: 1.0.0
+Version: 1.0.1
 Author: Maximum.Software
 Author URI: https://maximum.software/
 Text Domain: wpcf7-pdf-forms
@@ -17,7 +17,7 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 {
 	class WPCF7_Pdf_Forms
 	{
-		const VERSION = '1.0.0';
+		const VERSION = '1.0.1';
 		
 		private static $instance = null;
 		private $pdf_ninja_service = null;
@@ -298,7 +298,6 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 		public static function unset_meta( $post_id, $key )
 		{
 			delete_post_meta( $post_id, "wpcf7-pdf-forms-" . $key );
-			return $value;
 		}
 		
 		/**
@@ -654,7 +653,7 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 					$attachment['options']['flatten'] == true;
 				
 				$filepath = get_attached_file( $attachment_id );
-				$destfile = self::create_wpcf7_tmp_filepath( basename( $filepath ) );
+				$destfile = self::create_wpcf7_tmp_filepath('NEPHC_'.$processed_data['FullName'].'_'. basename( $filepath ) );
 				
 				try
 				{
@@ -674,7 +673,7 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 						copy( $filepath, $destfile );
 					$files[] = array( 'file' => $destfile, 'mail' => $mail, 'mail2' => $mail2 );
 					$destfile = self::create_wpcf7_tmp_filepath( basename( basename( $filepath . ".txt" ) ) );
-					$text = "Error generating PDF: " . $e->getMessage() . "\n"
+					$text = "Error generating PDF: " . $e->getMessage() . " at " . basename( $e->getFile() ) . ":" . $e->getLine() . "\n"
 					      . "\n"
 					      . "Form data:\n"
 					      . "\n";
@@ -904,6 +903,9 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 					
 					foreach( $options as &$option )
 						$tagValues .= '"' . $option . '" ';
+					
+					if( $type == 'checkbox' && count($options) > 1 )
+						$tagOptions .= 'exclusive ';
 				}
 				else
 					return null;
@@ -1015,8 +1017,13 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 			$fields = $this->get_fields( $attachment_id );
 			foreach( $fields as $id => &$field )
 			{
-				$type = strval($field['type']);
-				$name = strval($field['name']);
+				if( !isset( $field['type'] ) || !isset( $field['name'] ) )
+				{
+					unset( $fields[$id] );
+					continue;
+				}
+				
+				$type = strval( $field['type'] );
 				
 				// sanity check
 				if( ! ( $type === 'text' || $type === 'radio' || $type === 'select' || $type === 'checkbox' ) )
@@ -1024,6 +1031,8 @@ if( ! class_exists( 'WPCF7_Pdf_Forms' ) )
 					unset($fields[$id]);
 					continue;
 				}
+				
+				$name = strval( $field['name'] );
 				
 				$encoded_name = self::base64url_encode( $name );
 				$slug = sanitize_title( $name );
