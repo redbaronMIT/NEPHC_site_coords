@@ -17,15 +17,14 @@ $ushpa_number_bad_retval = "1900-1-1";  // returned when number is not in effect
 
 
 /**
- * Front end registration
+ * FUNCTION: Front end registration. Adds USHPA number entry
  */
 
-add_action('register_form', 'crf_registration_form_ushpa', 9, 1 );
-add_action('pms_register_form_after_fields','crf_registration_form_ushpa', 9, 1 );
-// used in the new user pms-register form
+add_action('register_form', 'crf_registration_form_ushpa', 8, 1 );
+add_action('pms_register_form_after_fields','crf_registration_form_ushpa', 8, 1 );
 function crf_registration_form_ushpa() {
     
-    
+   //If user is not logged in, add USHPA entry box to registration form
     if (!is_user_logged_in() )
     {
         
@@ -48,10 +47,129 @@ function crf_registration_form_ushpa() {
     }
 }
 
-/* 
- * Add check box to new user register from
+/**
+ * FUNCTION: Front end registration. Adds contact info entries
  */
 
+add_action('register_form', 'crf_registration_form_contactinfo', 9, 1 );
+add_action('pms_register_form_after_fields','crf_registration_form_contactinfo', 9, 1 );
+function crf_registration_form_contactinfo() {
+    
+   //If user is not logged in, add contact info boxes to registration form
+    if (!is_user_logged_in() )
+    {  
+//Mobile phone
+        $mobile_phone = ! empty( $_POST['mobile_phone'] ) ? intval( $_POST['mobile_phone'] ) : '';
+
+        ?>
+                <li>
+                <label for="mobile_phone"><?php esc_html_e( 'Mobile Phone # *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="mobile_phone"
+                               name="mobile_phone"
+                               value="<?php echo esc_attr( $mobile_phone ); ?>"
+                               class="input"
+                        />
+                </label>
+                </li> 
+<?php //street address    
+        $address_street = ! empty( $_POST['street_address'] ) ? intval( $_POST['street_address'] ) : ''; 
+    
+        ?>
+        <p>
+                <li>
+                <label for="street_address"><?php esc_html_e( 'Street Address *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="street_address"
+                               name="street_address"
+                               value="<?php echo esc_attr( $address_street ); ?>" 
+                               class="input"
+                        />
+                </label>
+                </li>
+	</p>
+<?php //City
+        $address_city = ! empty( $_POST['address_city'] ) ? intval( $_POST['address_city'] ) : '';
+
+        ?>
+        <p>
+                <li>
+                <label for="address_city"><?php esc_html_e( 'City *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="address_city"
+                               name="address_city"
+                               value="<?php echo esc_attr( $address_city ); ?>"
+                               class="input"
+                        />
+                </label>
+                </li>
+        </p>
+
+<?php //State
+        $address_state = ! empty( $_POST['address_state'] ) ? intval( $_POST['address_state'] ) : '';
+
+        ?>
+        <p>
+                <li>
+                <label for="address_state"><?php esc_html_e( 'State (Abbrev) *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="address_state"
+                               name="address_state"
+                               value="<?php echo esc_attr( $address_state ); ?>"
+                               class="input"
+                        />
+                </label>
+<?php //Zipcode
+        $address_zip = ! empty( $_POST['address_zip'] ) ? intval( $_POST['address_zip'] ) : '';
+
+        ?>
+		<li>
+		<label for="address_zip"><?php esc_html_e( 'ZIP code *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="address_zip"
+                               name="address_zip"
+                               value="<?php echo esc_attr( $address_zip ); ?>"
+                               class="input"
+                        />
+                </label>
+                </li>
+	</p>
+<?php //E-contact full name
+        $econtact_name = ! empty( $_POST['econtact_name'] ) ? intval( $_POST['econtact_name'] ) : '';
+
+        ?>
+		<li>
+		<label for="econtact_name"><?php esc_html_e( 'Emergency Contact, Full Name *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="econtact_name"
+                               name="econtact_name"
+                               value="<?php echo esc_attr( $econtact_name ); ?>"
+                               class="input"
+                        />
+                </label>
+                </li>
+<?php //E-contact phone
+        $econtact_phone = ! empty( $_POST['econtact_phone'] ) ? intval( $_POST['econtact_phone'] ) : '';
+
+        ?>
+		<li>
+		<label for="econtact_phone"><?php esc_html_e( 'Emergency Contact, Phone Number *', 'crf' ) ?><br/>
+                        <input type="text"
+                               id="econtact_phone"
+                               name="econtact_phone"
+                               value="<?php echo esc_attr( $econtact_phone ); ?>"
+                               class="input"
+                        />
+                </label>
+                </li>
+        <?php
+    }   
+}
+
+
+/* 
+ * FUNCTION: Add check box to new user register from
+ */
 add_action('register_form', 'crf_registration_form_contact_ok', 10, 1 );
 add_action('pms_register_form_after_fields','crf_registration_form_contact_ok', 10, 1 );
 // used in the new user pms-register form
@@ -62,35 +180,35 @@ function crf_registration_form_contact_ok( $user ) {
     if (!is_user_logged_in() )
     {
         $contact_ok = ! empty( $_POST['contact_ok'] ) ? $_POST['contact_ok'] : '';
-    
 ?>
-<style>
-     table {
-        border-width: medium;
-      }
-    </style>
+	<style>
+	     table {
+		border-width: medium;
+	      }
+	</style>
 
-<li>
+	<li>
 	<table class="form-table">
 		<tr>
 			<td>
-                        <input type="checkbox"
-                               id="contact_ok"
-                               name="contact_ok"
-                               value="true"
-                               class="input"
-                        />
-                        </td>
-
+			<input type="checkbox"
+			       id="contact_ok"
+			       name="contact_ok"
+			       value="true"
+			       class="input"
+			/>
+			</td>
 			<th><label for="contact_ok">Check to allow NEPHC to contact you using your email address </label></th>
 		</tr>
 	</table>
-</li>
-	<?php
+	</li>
+<?php
     }
 }
 
-
+/**
+ * These functions display specific error types
+ */
 // display bad ushpa number error in pms-register-form
 add_action('pms_register_form_after_fields', 'pms_ushpa_validation_error_display', 9, 1);
 function pms_ushpa_validation_error_display($atts) {
@@ -111,7 +229,9 @@ function pms_contact_ok_validation_error_display($atts) {
 }
 
 
-// validate ushpa number and contact_ok in pms-register-form 
+/**
+ * FUNCTION: validates ushpa number and contact_ok in pms-register-form 
+ */
 add_action( 'pms_register_form_validation', 'crf_pms_registration_errors', 9 );
 function crf_pms_registration_errors () {
     
@@ -162,7 +282,9 @@ function crf_pms_registration_errors () {
     
 }
 
-
+/**
+ * FUNCTION: checks for registration errors
+ */
 add_action( 'user_profile_update_errors', 'crf_registration_errors', 10, 3 ); // validates user-edit.php  
 add_shortcode("get_ushpa_register","crf_registration_form");
 
@@ -226,7 +348,9 @@ function crf_registration_errors( $errors, $sanitized_user_login, $user_email ) 
 }
 
 
-// cause ushpa number and contact_ok to be included in user create
+/**
+ * Cause new fields to be included in user create
+ */
 add_action( 'user_register', 'crf_user_register' );
 add_action('pms_register_form_after_create_user', 'crf_user_register');
 
@@ -234,9 +358,37 @@ function crf_user_register( $user_id ) {
     if ( ! empty( $_POST['ushpa_number'] ) ) {
         update_user_meta( $user_id, 'ushpa_number', intval( $_POST['ushpa_number'] ) );
     }
+
+    if ( ! empty( $_POST['mobile_phone'] )) {
+        update_user_meta( $user_id, 'mobile_phone', $_POST['mobile_phone'] );
+    }
     
     if ( ! empty( $_POST['contact_ok'] )) {
         update_user_meta( $user_id, 'contact_ok', $_POST['contact_ok'] );
+    }
+
+    if ( ! empty( $_POST['address_street'] )) {
+        update_user_meta( $user_id, 'address_street', $_POST['address_street'] );
+    }
+
+    if ( ! empty( $_POST['address_city'] )) {
+        update_user_meta( $user_id, 'address_city', $_POST['address_city'] );
+    }
+
+    if ( ! empty( $_POST['address_state'] )) {
+        update_user_meta( $user_id, 'address_state', $_POST['address_state'] );
+    }
+
+    if ( ! empty( $_POST['address_zip'] )) {
+        update_user_meta( $user_id, 'address_zip', $_POST['address_zip'] );
+    }
+
+    if ( ! empty( $_POST['econtact_name'] )) {
+        update_user_meta( $user_id, 'econtact_name', $_POST['econtact_name'] );
+    }
+
+    if ( ! empty( $_POST['econtact_phone'] )) {
+        update_user_meta( $user_id, 'econtact_phone', $_POST['econtact_phone'] );
     }
 }
 
@@ -359,6 +511,34 @@ function crf_update_extra_profile_fields( $user_id ) {
 	if ( ! empty( $_POST['contact_ok'] )) {
 	    update_user_meta( $user_id, 'contact_ok', $_POST['contact_ok'] );
 	}
+
+        if ( ! empty( $_POST['mobile_phone'] )) {
+                update_user_meta( $user_id, 'mobile_phone', intval( $_POST['mobile_phone'] ) );
+        }
+
+        if ( ! empty( $_POST['address_street'] )) {
+                update_user_meta( $user_id, 'address_street', intval( $_POST['address_street'] ) );
+        }
+
+        if ( ! empty( $_POST['address_city'] )) {
+                update_user_meta( $user_id, 'address_city', intval( $_POST['address_city'] ) );
+        }
+
+        if ( ! empty( $_POST['address_state'] )) {
+                update_user_meta( $user_id, 'address_state', intval( $_POST['address_state'] ) );
+        }
+
+        if ( ! empty( $_POST['address_zip'] )) {
+                update_user_meta( $user_id, 'address_zip', intval( $_POST['address_zip'] ) );
+        }
+
+        if ( ! empty( $_POST['econtact_name'] )) {
+                update_user_meta( $user_id, 'econtact_name', intval( $_POST['econtact_name'] ) );
+        }
+
+        if ( ! empty( $_POST['econtact_phone'] )) {
+                update_user_meta( $user_id, 'econtact_phone', intval( $_POST['econtact_phone'] ) );
+        }
 
 }
 
